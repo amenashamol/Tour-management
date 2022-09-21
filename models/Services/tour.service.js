@@ -1,19 +1,18 @@
+const { promises } = require('stream')
 const Tour=require('../tour.model')
 
 
-exports.getTourService=async()=>{
+exports.getTourService=async(filters,queries)=>{
     const tours=await Tour
-          .find({})
-    //       .select(queries.fields)
-    //       .sort(queries.sortBy)
-    //       .skip(queries.skip)
-    //       .limit(queries.limit)
-    //       .select(queries.fields)
-    //       .sort(queries.sortBy)
-    //       const total=Tour.countDocuments(filters)
-    //       const page=Math.ceil(total/limit)
-    // return (total,page,tours)
-    return tours
+          .find(filters)
+          .sort(queries.sortBy)
+          .skip(queries.skip)
+          .limit(queries.limit)
+          .select(queries.fields)
+          const total=await Tour.countDocuments(filters)
+          const page=Math.ceil(total/queries.limit)
+    return {total,page,tours}
+    
 }
 
 exports.createTourService=async(data)=>{
@@ -29,40 +28,22 @@ exports.updateTourByIdService=async(tourId,data)=>{
         runValidators:true
         })
 
-    // const result= await Tour.updateOne({_id:tourId},{$inc:data},{
-    //     runValidators:true
-    //     })
-
-    // const tour= await tour.findById(tourId)
-    // const result= await tour.set(data).save()
+    
     return result
 }
 
-exports.bulkUpdateTourService=async(data)=>{
-    
-    // const result= await tour.updateMany({_id:data.ids},data.data,{
-    //     runValidators:true
-    //     })
 
-    const tours= []
-    data.ids.forEacch(tour=>{
-       tours.push(Tour.updateOne({_id:tour.id},tour.data))
-    })
-    const result= await Promise.all(tours)
+
+exports.getTourByViewService=async()=>{
+    const tours=[]
+     tours.push(Tour.find().sort({view:-1}).limit(3))
+     const result= await Promise.all(tours)
     return result
 }
 
-exports.deleteTourByIdService=async(id)=>{
-    const result= await Tour.deleteOne({_id:id},{$inc:data})
-    return result
-}
-
-exports.bulkDeleteTourService=async(ids)=>{
-    
-    const result= await Tour.deleteMany({_id:ids},{
-        runValidators:true
-        })
-
-    
+exports.getTourByPriceService=async()=>{
+    const tours=[]
+     tours.push(Tour.find().sort({price:1}).limit(3))
+     const result= await Promise.all(tours)
     return result
 }

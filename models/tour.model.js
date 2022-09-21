@@ -10,14 +10,14 @@ const tourSchema=mongoose.Schema({
         minLength:[3, "Name must be  at least 3 charecter"],
         maxLength:[100, "name is too larger"]
     },
-    // image:{
-    //     type:Image
-    //     // required:true
-    // },
+    
     description:{
         type:String,
         required:true
     },
+    image: {
+        type: String,
+      },
     price:{
         type:Number,
         required:true,
